@@ -47,4 +47,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    const getSuggestionsBtn = document.getElementById('get-suggestions-btn');
+    if (getSuggestionsBtn) {
+        getSuggestionsBtn.addEventListener('click', () => {
+            fetch('http://localhost:3000/suggest-tasks', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ tasks: tasks }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Suggestions: ' + data.suggestions.join(', ')); // Display suggestions in an alert
+            })
+            .catch(error => {
+                console.error('Error fetching suggestions:', error);
+                alert('Failed to get suggestions.');
+            });
+        });
+    }
 });
